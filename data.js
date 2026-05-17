@@ -11,6 +11,7 @@ const trees = [
     },
     {
         img: "images/tree3.jpg",
-        note: "Some trees grow quietly just to listen"
+        note: "Some trees grow quietly just to listen to the sky.",
+        photographer: "Unknown"
     }
-]
+];
