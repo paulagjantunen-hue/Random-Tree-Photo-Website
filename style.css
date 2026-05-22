@@ -25,3 +25,31 @@ img {
     font-size: 1.2rem;
     font-style: italic;
 }
+
+#tree-credit {
+    margin-top: 8px;
+    color: #b0d6b0;
+}
+
+button {
+    margin-top: 24px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 999px;
+    background: #2d5b39;
+    color: #f3fff4;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+button:hover,
+button:focus {
+    background: #3f7b4f;
+    transform: translateY(-1px);
+}
+
+button:focus {
+    outline: 3px solid #8cc58c;
+    outline-offset: 2px;
+}
