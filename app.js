@@ -1,32 +1,48 @@
-let cache = [];
-let index = 0;
+const feed = document.getElementById("feed");
 
-async function ensureCache() {
-    if (index < cache.length) return;
+let loading = false;
+let page = 1;
 
-    const newBatch = await fetchTreeBatch();
-    cache = cache.concat(newBatch);
+async function addScene() {
+  if (loading) return;
+
+  loading = true;
+
+  const batch = await fetchTreeBatch(page);
+  page++;
+
+  for (const tree of batch) {
+    const scene = document.createElement("section");
+    scene.className = "scene";
+
+    scene.innerHTML = `
+      <img src="${tree.img}" alt="Forest scene"/>
+      <div class="caption">{randomPoem()}</div>
+      <div class="credit">
+        - ${tree.photographer}
+      </div>
+    `;
+
+    feed.appendChild(scene);
+
+    requestAnimationFrame(() => {
+        scene.classList.add("visible");
+    });
+  }
+
+  loading = false;
 }
 
-async function showTree() {
-    await ensureCache();
+window.addEventListener("scroll", async () => {
+  const nearBottom =
+    window.innerHeight + window.scrollY
+    >= document.body.offsetHeight - 1200;
+  
+  if (nearBottom) {
+    await addScene();
+  }
+});
 
-    const tree = cache[index++];
-    const img = document.getElementById("tree-img");
-
-    img.style.opacity = 0;
-
-    setTimeout(() => {
-        img.src = tree.img;
-
-        document.getElementById("tree-note").textContent = randomPoem();
-        document.getElementById("tree-credit").textContent =
-            `- ${tree.photographer} (${tree.location})`;
-
-        img.style.opacity = 1;
-    }, 200);
-}
-
-// button + first load
-document.getElementById("new-tree-btn").addEventListener("click", showTree);
-window.addEventListener("DOMContentLoaded", showTree);
+window.addEventListener("DOMContentLoaded", async () => {
+  await addScene();
+});

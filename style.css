@@ -1,55 +1,68 @@
 body {
     margin: 0;
-    background: #0b0f0c;
-    color: #e8f5e9;
+    background: #040705;
+    color: #eef5ee;
     font-family: Georgia, serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    overflow-x: hidden;
 }
 
-.container {
+header {
     text-align: center;
-    max-width: 700px;
+    padding: 60px 20px 40px;
 }
 
-img {
-    max-width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
 }
 
-#tree-note {
+header p {
+    opacity: 0.7;
+}
+
+#feed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.scene {
+    width: min(900px, 92vw);
+    margin-bottom: 120px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition:
+      opacity 1.5s ease,
+      transform 1.5s ease;
+}
+
+.scene.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scene img {
+    width: 100%;
+    border-radius: 18px;
+    box-shadow: 0 10px 60px rgba(0,0,0,0.6);
+}
+
+.caption {
     margin-top: 20px;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-style: italic;
+    line-height: 1.7;
+    opacity: 0.92;
 }
 
-#tree-credit {
-    margin-top: 8px;
-    color: #b0d6b0;
+.credit {
+    margin-top: 12px;
+    opacity: 0.5;
+    font-size: 0.9rem;
 }
 
-button {
-    margin-top: 24px;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 999px;
-    background: #2d5b39;
-    color: #f3fff4;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease;
-}
-
-button:hover,
-button:focus {
-    background: #3f7b4f;
-    transform: translateY(-1px);
-}
-
-button:focus {
-    outline: 3px solid #8cc58c;
-    outline-offset: 2px;
+.loading {
+    text-align: center;
+    padding: 60px;
+    opacity: 0.4;
 }

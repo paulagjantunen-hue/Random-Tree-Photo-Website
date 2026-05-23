@@ -3,20 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Tree</title>
+    <title>Forest OS</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
-        <img id="tree-img" src="" alt="Random tree photo" />
-        <p id="tree-note"></p>
-        <p id="tree-credit"></p>
-        <button id="new-tree-btn">Another tree</button>
-    </div>
+  <audio id="forest-audio" loop autoplay>
+    <source src="audio/forest.mp3" type="audio/mp3">
+  </audio>
 
-    <script src="api.js"></script>
-    <script src="poetry.js"></script>
-    <script src="app.js"></script>
+  <header>
+    <h1>Forest OS</h1>
+    <p>an endless walk through digital woods</p>
+  </header>
+
+  <main id="feed"></main>
+
+  <div class="loading">walking deeoer into the forest...</div>
+
+  <script src="api.js"></script>
+  <script src="poetry.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

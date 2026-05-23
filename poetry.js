@@ -1,12 +1,13 @@
-const POETRY_LINES = [
-    "The forest writes slowly, and never repeats itself.",
-    "A tree is a memory learning how to stand still.",
-    "Some silence has roots deeper than language.",
-    "The wind edits everything it touches.",
-    "Every leaf is a sentence the sky forgot to finish.",
-    "Time does not pass here. It grows."
+const POEMS = [
+    "The trees leaned together like old secrets.",
+    "Rain stayed here long after the storm left.",
+    "The forest does nof ask who you were before entering.",
+    "Every branch carried the weight of another season.",
+    "The earth remembered something the sky had forgotten.",
+    "Some paths only exists while you are walking them.",
+    "The woods moved softly around the edge of thought."
 ];
 
 function randomPoem() {
-    return POETRY_LINES[Math.floor(Math.random() * POETRY_LINES.length)];
+    return POEMS[Math.floor(Math.random() * POEMS.length)];
 }
