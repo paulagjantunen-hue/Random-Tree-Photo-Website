@@ -80,15 +80,40 @@ header p {
     pointer-events: none;
     z-index: 15;
 
-    background: rgba(255,0,0,0.3);
-    filter: none;
-    opacity: 1;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.18), transparent 45%),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.14), transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.12), transparent 55%),
+        radial-gradient(circle at 60% 20%, rgba(255,255,255,0.10), transparent 60%),
+        radial-gradient(circle at 10% 70%, rgba(255,255,255,0.08), transparent 65%);
 
-    animation: fogMove 35s linear infinite;
+    filter: blur(80px);
+    opacity: 0.65;
+
+    animation: fogDrift 60s ease-in-out infinite;
+    mix-blend-mode: screen;
 }
 
-@keyframes fogMove {
-    0% { transform: translate(0%, 0%) scale(1.1); }
-    50% { transform: translate(-8%, -5%) scale(1.25); }
-    100% { transform: translate(0%, 0%) scale(1.1); }
+@keyframes fogDrift {
+    0% {
+        transform: translate(-2%, -2%) scale(1.15);
+    }
+    25% {
+        transform: translate(3%, -1%) scale(1.25);
+    }
+    50% {
+        transform: translate(-3%, 2%) scale(1.3);
+    }
+    75% {
+        transform: translate(2%, 3%) scale(1.2);
+    }
+    100% {
+        transform: translate(-2%, -2%) scale(1.15);
+    }
+}
+
+.fog-layer-2 {
+    opacity: 0.35;
+    filter: blur(120px);
+    animation-duration: 90s;
 }
