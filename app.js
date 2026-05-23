@@ -2,8 +2,15 @@ const feed = document.getElementById("feed");
 
 let page = 1;
 let loading = false;
-let page = 1;
 
+const depthScenes = [];
+
+const fog = document.querySelector(".fog-layer");
+const fog2 = document.querySelector(".fog-layer-2");
+const rain = document.querySelector(".rain-layer");
+const audio = document.getElementById("forest-audio");
+
+/* SCENES */
 async function addScene() {
   if (loading) return;
   loading = true;
@@ -18,21 +25,18 @@ async function addScene() {
 
   for (const tree of batch) {
     const scene = document.createElement("section");
-    scene.className = "scene depth-layer";
+    scene.className = "scene";
 
     const captionText = randomPoem().trim();
 
     scene.innerHTML = `
       <img src="${tree.img}" alt="Forest scene"/>
       <div class="caption">${captionText}</div>
-      <div class="credit">
-        — ${tree.photographer}
-      </div>
+      <div class="credit">— ${tree.photographer}</div>
     `;
 
     feed.appendChild(scene);
-
-    registerDepthScene(scene);
+    depthScenes.push(scene);
 
     requestAnimationFrame(() => {
       scene.classList.add("visible");
@@ -42,109 +46,68 @@ async function addScene() {
   loading = false;
 }
 
-window.addEventListener("scroll", async () => {
+/* PARALLAX */
+function updateParallax() {
+  const scrollY = window.scrollY;
+
+  depthScenes.forEach((scene, i) => {
+    const speed = 0.04 + (i % 5) * 0.015;
+    const y = scrollY * speed;
+
+    scene.style.setProperty("--parallaxY", `${y}px`);
+  });
+}
+
+/* FOG */
+function updateFog() {
+  const scrollY = window.scrollY;
+  const max = document.body.scrollHeight - window.innerHeight;
+  const p = max > 0 ? scrollY / max : 0;
+
+  fog.style.opacity = 0.4 + p * 0.5;
+  fog.style.transform = `scale(${1.1 + p * 0.3})`;
+
+  fog2.style.opacity = 0.2 + p * 0.3;
+  fog2.style.transform = `scale(${1.3 + p * 0.4})`;
+}
+
+/* RAIN */
+function updateRain() {
+  const scrollY = window.scrollY;
+  const max = document.body.scrollHeight - window.innerHeight;
+  const p = max > 0 ? scrollY / max : 0;
+
+  rain.style.opacity = 0.15 + p * 0.6;
+}
+
+/* AUDIO (gesture-safe) */
+function startAudio() {
+  audio.volume = 0.4;
+  audio.play().catch(() => {});
+
+  window.removeEventListener("click", startAudio);
+}
+
+/* MAIN LOOP (ONE SYSTEM ONLY) */
+function updateAll() {
+  requestAnimationFrame(() => {
+    updateParallax();
+    updateFog();
+    updateRain();
+  });
+
   const nearBottom =
     window.innerHeight + window.scrollY >=
     document.body.offsetHeight - 1200;
 
-  if (nearBottom) {
-    await addScene();
-  }
+  if (nearBottom) addScene();
+}
+
+/* EVENTS (ONLY ONCE) */
+window.addEventListener("scroll", updateAll);
+window.addEventListener("DOMContentLoaded", () => {
+  addScene();
+  updateAll();
 });
 
-window.addEventListener("DOMContentLoaded", async () => {
-  await addScene();
-});
-
-const fog = document.querySelector(".fog-layer");
-
-function updateFog() {
-  const scrollY = window.scrollY;
-  const docHeight = document.body.scrollHeight - window.innerHeight;
-
-  const progress = docHeight > 0 ? scrollY / docHeight : 0;
-
-  //    deeper = denser fog
-  const opacity = 0.3 + progress * 0.5;
-
-  //    slightly zoom for depth illusion
-  const scale = 1.1 + progress * 0.3;
-
-  fog.style.opacity = opacity;
-  fog.style.transform = `scale(${scale})`;
-}
-
-window.addEventListener("scroll", updateFog);
-window.addEventListener("DOMContentLoaded", updateFog);
-
-const fog2 = document.querySelector(".fog-layer-2");
-
-function updateFog2() {
-  const scrollY = window.scrollY;
-  const docHeight = document.body.scrollHeight - window.innerHeight;
-
-  const progress = docHeight > 0 ? scrollY / docHeight : 0;
-
-  fog2.style.opacity = 0.2 + progress * 0.3;
-  fog2.style.transform = `scale(${1.2 + progress * 0.4})`;
-}
-
-window.addEventListener("scroll", updateFog2);
-window.addEventListener("DOMContentLoaded", updateFog2);
-
-const depthScenes = [];
-
-function registerDepthScene(scene) {
-  depthScenes.push(scene);
-}
-
-function updateParallax() {
-  const scrollY = window.scrollY;
-
-  depthScenes.forEach((scene, index) => {
-    const speed = 0.04 + (index % 5) * 0.015;
-    const y = scrollY * speed;
-
-    scene.style.setProperty("--parallaxY", `${y}px`);
-    window.addEventListener("scroll", () => {
-      requestAnimationFrame(updateParallax);
-    });
-  });
-}
-
-window.addEventListener("scroll", updateParallax);
-
-const audio = new Audio("forest.mp3");
-
-function startAudio() {
-    audio.volume = 0.4;
-
-    const playPromise = audio.play();
-    if (playPromise !== undefined) {
-        playPromise.catch(() => {});
-    }
-
-    window.removeEventListener("click", startAudio);
-    window.removeEventListener("touchstart", startAudio);
-}
-
-const rain = document.querySelector(".rain-layer");
-
-function updateRain() {
-  const scrollY = window.scrollY;
-  const maxScroll =
-    document.body.scrollHeight - window.innerHeight;
-
-  const depth = maxScroll > 0
-    ? scrollY / maxScroll
-    : 0;
-
-  // deeper into forest = heavier rain
-  rain.style.opacity = 0.2 + depth * 0.6;
-}
-
-window.addEventListener("scroll", updateRain);
-window.addEventListener("DOMContentLoaded", updateRain);
-
-window.addEventListener("scroll", startAudio);
-window.addEventListener("touchstart", startAudio);
+window.addEventListener("click", startAudio);
