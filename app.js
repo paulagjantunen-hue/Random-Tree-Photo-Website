@@ -1,5 +1,6 @@
 const feed = document.getElementById("feed");
 
+let page = 1;
 let loading = false;
 let page = 1;
 
