@@ -113,7 +113,7 @@ function updateParallax() {
 
 window.addEventListener("scroll", updateParallax);
 
-const audio = document.getElementById("forest-audio");
+const audio = new Audio("forest.mp3");
 
 function startAudio() {
     audio.volume = 0.4;
@@ -144,3 +144,6 @@ function updateRain() {
 
 window.addEventListener("scroll", updateRain);
 window.addEventListener("DOMContentLoaded", updateRain);
+
+window.addEventListener("scroll", startAudio);
+window.addEventListener("touchstart", startAudio);
