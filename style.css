@@ -80,13 +80,9 @@ header p {
     pointer-events: none;
     z-index: 15;
 
-    background:
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.10), transparent 45%),
-        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.08), transparent 50%),
-        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.06), transparent 55%);
-
-    filter: blur(70px);
-    opacity: 0.45;
+    background: rgba(255,255,255,0.08);
+    filter: none;
+    opacity: 1;
 
     animation: fogMove 35s linear infinite;
 }
