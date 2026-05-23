@@ -80,7 +80,7 @@ header p {
     pointer-events: none;
     z-index: 15;
 
-    background: rgba(255,255,255,0.08);
+    background: rgba(255,0,0,0.3);
     filter: none;
     opacity: 1;
 
