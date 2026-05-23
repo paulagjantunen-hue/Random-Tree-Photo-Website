@@ -24,10 +24,13 @@ header p {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    z-index: 30;
 }
 
 .scene {
     width: min(900px, 92vw);
+    opacity: 1;
     margin-bottom: 120px;
     opacity: 0;
     transform: translateY(40px);
@@ -49,10 +52,11 @@ header p {
 
 .caption {
     margin-top: 20px;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-style: italic;
-    line-height: 1.7;
-    opacity: 0.92;
+    line-height: 1.8;
+    opacity: 0.9;
+    letter-spacing: 0.2px;
 }
 
 .credit {
