@@ -10,7 +10,19 @@ const fog2 = document.querySelector(".fog-layer-2");
 const rain = document.querySelector(".rain-layer");
 const audio = document.getElementById("forest-audio");
 
-/* SCENES */
+/* ----------------------------------
+   ENVIRONMENT STATE
+---------------------------------- */
+const environment = {
+  depth: 0,
+  wind: 0,
+  windTarget: 0,
+  time: 0
+};
+
+/* ----------------------------------
+   SCENES
+---------------------------------- */
 async function addScene() {
   if (loading) return;
   loading = true;
@@ -46,7 +58,9 @@ async function addScene() {
   loading = false;
 }
 
-/* PARALLAX */
+/* ----------------------------------
+   PARALLAX
+---------------------------------- */
 function updateParallax() {
   const scrollY = window.scrollY;
 
@@ -58,53 +72,100 @@ function updateParallax() {
   });
 }
 
-/* FOG */
+/* ----------------------------------
+   ENVIRONMENT
+---------------------------------- */
+function updateEnvironment() {
+  const scrollY = window.scrollY;
+  const maxScroll = document.body.scrollHeight - window.innerHeight;
+
+  environment.depth = maxScroll > 0
+    ? scrollY / maxScroll
+    : 0;
+
+  environment.time += 0.002;
+
+  // slowly changing wind target
+  environment.windTarget = Math.sin(environment.time * 0.4) * 25;
+
+  // smooth wind interpolation
+  environment.wind +=
+    (environment.windTarget - environment.wind) * 0.02;
+}
+
+/* ----------------------------------
+   FOG
+---------------------------------- */
 function updateFog() {
-  const scrollY = window.scrollY;
-  const max = document.body.scrollHeight - window.innerHeight;
-  const p = max > 0 ? scrollY / max : 0;
+  const p = environment.depth;
+  const wind = environment.wind;
 
-  fog.style.opacity = 0.4 + p * 0.5;
-  fog.style.transform = `scale(${1.1 + p * 0.3})`;
+  fog.style.opacity = 0.35 + p * 0.45;
 
-  fog2.style.opacity = 0.2 + p * 0.3;
-  fog2.style.transform = `scale(${1.3 + p * 0.4})`;
+  fog.style.transform = `
+    translateX(${wind * 0.6}px)
+    translateY(${Math.sin(environment.time) * 4}px)
+    scale(${1.05 + p * 0.35})
+  `;
+
+  fog2.style.opacity = 0.15 + p * 0.25;
+
+  fog2.style.transform = `
+    translateX(${wind * -0.4}px)
+    translateY(${Math.cos(environment.time * 0.8) * 6}px)
+    scale(${1.2 + p * 0.45})
+  `;
 }
 
-/* RAIN */
+/* ----------------------------------
+   RAIN
+---------------------------------- */
 function updateRain() {
-  const scrollY = window.scrollY;
-  const max = document.body.scrollHeight - window.innerHeight;
-  const p = max > 0 ? scrollY / max : 0;
+  const p = environment.depth;
+  const wind = environment.wind;
 
-  rain.style.opacity = 0.15 + p * 0.6;
+  rain.style.opacity = 0.1 + p * 0.6;
+
+  rain.style.setProperty(
+    "--rainAngle",
+    `${12 + wind * 0.25}deg`
+  );
 }
 
-/* AUDIO (gesture-safe) */
+/* ----------------------------------
+   AUDIO
+---------------------------------- */
 function startAudio() {
   audio.volume = 0.4;
+
   audio.play().catch(() => {});
 
   window.removeEventListener("click", startAudio);
 }
 
-/* MAIN LOOP (ONE SYSTEM ONLY) */
+/* ----------------------------------
+   MAIN LOOP
+---------------------------------- */
 function updateAll() {
-  requestAnimationFrame(() => {
-    updateParallax();
-    updateFog();
-    updateRain();
-  });
+  updateEnvironment();
+  updateParallax();
+  updateFog();
+  updateRain();
 
   const nearBottom =
     window.innerHeight + window.scrollY >=
     document.body.offsetHeight - 1200;
 
-  if (nearBottom) addScene();
+  if (nearBottom) {
+    addScene();
+  }
+
+  requestAnimationFrame(updateAll);
 }
 
-/* EVENTS (ONLY ONCE) */
-window.addEventListener("scroll", updateAll);
+/* ----------------------------------
+   STARTUP
+---------------------------------- */
 window.addEventListener("DOMContentLoaded", () => {
   addScene();
   updateAll();

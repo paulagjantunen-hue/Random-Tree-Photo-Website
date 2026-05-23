@@ -89,55 +89,76 @@ header p {
     margin: 40px 0;
 }
 
-/* FOG */
+/* 🌫️ FOG */
 .fog-layer {
-    position: fixed;
-    inset: 0;
-    z-index: 15;
-    pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
 
-    background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), transparent 45%),
-        radial-gradient(circle at 70% 50%, rgba(255,255,255,0.18), transparent 50%),
-        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.15), transparent 55%);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.22), transparent 45%),
+    radial-gradient(circle at 70% 50%, rgba(255,255,255,0.16), transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(255,255,255,0.12), transparent 55%);
 
-    filter: blur(60px);
-    opacity: 0.6;
+  filter: blur(70px);
+  opacity: 0.5;
+
+  will-change: transform, opacity;
 }
 
 .fog-layer-2 {
-    opacity: 0.25;
-    filter: blur(120px);
-    transform: scale(1.3);
+  opacity: 0.22;
+  filter: blur(140px);
 }
 
-/* RAIN */
+/* 🌧️ RAIN */
 .rain-layer {
-    position: fixed;
-    inset: 0;
-    z-index: 20;
-    pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  overflow: hidden;
+
+  --rainAngle: 12deg;
 }
 
 .rain-layer::before {
-    content: "";
-    position: absolute;
-    inset: -200% 
+  content: "";
 
-    background-image: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.12) 0px,
-        rgba(255,255,255,0.12) 2px,
-        transparent 2px,
-        transparent 14px
+  position: absolute;
+  inset: -200%;
+
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.12) 0px,
+      rgba(255,255,255,0.12) 2px,
+      transparent 2px,
+      transparent 14px
     );
 
-    transform: rotate(12deg);
-    animation: rainFall 0.8s linear infinite;
-    opacity: 0.2;
+  background-size: 3px 18px;
+
+  opacity: 0.22;
+
+  transform: rotate(var(--rainAngle));
+
+  animation: rainFall 0.8s linear infinite;
+
+  will-change: transform;
 }
 
 @keyframes rainFall {
-    from { transform: translateY(0) rotate(12deg); }
-    to { transform: translateY(220px) rotate(12deg); }
+  from {
+    transform:
+      translateY(0)
+      rotate(var(--rainAngle));
+  }
+
+  to {
+    transform:
+      translateY(220px)
+      rotate(var(--rainAngle));
+  }
 }
