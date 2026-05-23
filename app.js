@@ -52,3 +52,24 @@ window.addEventListener("scroll", async () => {
 window.addEventListener("DOMContentLoaded", async () => {
   await addScene();
 });
+
+const fog = document.querySelector(".fog-layer");
+
+function updateFog() {
+  const scrollY = window.scrollY;
+  const docHeight = document.body.scrollHeight - window.innerHeight;
+
+  const progress = docHeight > 0 ? scrollY / docHeight : 0;
+
+  //    deeper = denser fog
+  const opacity = 0.3 + progress * 0.5;
+
+  //    slightly zoom for depth illusion
+  const scale = 1.1 + progress * 0.3;
+
+  fog.computedStyleMap.opacity = opacity;
+  fog.computedStyleMap.transform = `scale(${scale})`;
+}
+
+window.addEventListener("scroll", updateFog);
+window.addEventListener("DOMContentLoaded", updateFog);
