@@ -1,8 +1,3 @@
-document.body.insertAdjacentHTML(
-  "beforeend",
-  '<div style="position:fixed;bottom:0;left:0;z-index:99999;background:blue;color:white;padding:10px;">JS LOADED</div>'
-);
-
 const feed = document.getElementById("feed");
 
 let loading = false;
@@ -104,47 +99,16 @@ window.addEventListener("scroll", updateParallax);
 
 const audio = document.getElementById("forest-audio");
 
-async function startAudio() {
-  try {
-    await audio.play();
+function startAudio() {
+    audio.volume = 0.4;
+    audio.play().catch(() => {});
 
-    // remove listeners after successful start
     window.removeEventListener("click", startAudio);
     window.removeEventListener("touchstart", startAudio);
-  } catch (err) {
-    console.log("Audio blocked until interaction.");
-  }
 }
 
 window.addEventListener("click", startAudio);
 window.addEventListener("touchstart", startAudio);
-
-audio.volume = 0;
-
-async function startAudio() {
-  try {
-    await audio.play();
-
-    let volume = 0;
-
-    const fade = setInterval(() => {
-      volume += 0.02;
-
-      if (volume >= 0.5) {
-        volume = 0.5;
-        clearInterval(fade);
-      }
-
-      audio.volume = volume;
-    }, 100);
-
-    window.removeEventListener("click", startAudio);
-    window.removeEventListener("touchstart", startAudio);
-
-  } catch (err) {
-    console.log("Audio blocked until interaction.");
-  }
-}
 
 const rain = document.querySelector(".rain-layer");
 
