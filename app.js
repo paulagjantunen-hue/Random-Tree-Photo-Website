@@ -76,6 +76,21 @@ function updateFog() {
 window.addEventListener("scroll", updateFog);
 window.addEventListener("DOMContentLoaded", updateFog);
 
+const fog2 = document.querySelector(".fog-layer-2");
+
+function updateFog2() {
+  const scrollY = window.scrollY;
+  const docHeight = document.body.scrollHeight - window.innerHeight;
+
+  const progress = docHeight > 0 ? scrollY / docHeight : 0;
+
+  fog2.style.opacity = 0.2 + progress * 0.3;
+  fog2.style.transform = `scale(${1.2 + progress * 0.4})`;
+}
+
+window.addEventListener("scroll", updateFog2);
+window.addEventListener("DOMContentLoaded", updateFog2);
+
 const depthScenes = [];
 
 function registerDepthScene(scene) {
@@ -90,6 +105,9 @@ function updateParallax() {
     const y = scrollY * speed;
 
     scene.style.setProperty("--parallaxY", `${y}px`);
+    window.addEventListener("scroll", () => {
+      requestAnimationFrame(updateParallax);
+    });
   });
 }
 
@@ -99,14 +117,15 @@ const audio = document.getElementById("forest-audio");
 
 function startAudio() {
     audio.volume = 0.4;
-    audio.play().catch(() => {});
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+    }
 
     window.removeEventListener("click", startAudio);
     window.removeEventListener("touchstart", startAudio);
 }
-
-window.addEventListener("click", startAudio);
-window.addEventListener("touchstart", startAudio);
 
 const rain = document.querySelector(".rain-layer");
 
