@@ -48,7 +48,7 @@ header p {
     margin-bottom: 120px;
     opacity: 0;
     --offsetY: 40px;
-    transform: translateY(var(--offsetY));
+    transform: translateY(calc(var(--offsetY) + var(--parallaxY, 0px)));
     transition:
       opacity 1.5s ease,
       transform 1.5s ease;
@@ -98,6 +98,7 @@ header p {
 
     filter: blur(60px);
     opacity: 0.7;
+    animation: fogDrift 60s ease-in-out infinite;
 }
 
 @keyframes fogDrift {

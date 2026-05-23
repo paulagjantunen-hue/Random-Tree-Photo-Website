@@ -69,8 +69,8 @@ function updateFog() {
   //    slightly zoom for depth illusion
   const scale = 1.1 + progress * 0.3;
 
-  fog.computedStyleMap.opacity = opacity;
-  fog.computedStyleMap.transform = `scale(${scale})`;
+  fog.style.opacity = opacity;
+  fog.style.transform = `scale(${scale})`;
 }
 
 window.addEventListener("scroll", updateFog);
@@ -87,11 +87,9 @@ function updateParallax() {
 
   depthScenes.forEach((scene, index) => {
     const speed = 0.04 + (index % 5) * 0.015;
-
     const y = scrollY * speed;
 
-    scene.style.transform =
-        `translateY(${y}px)`;
+    scene.style.setProperty("--parallaxY", `${y}px`);
   });
 }
 
