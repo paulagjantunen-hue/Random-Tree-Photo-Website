@@ -7,17 +7,25 @@ async function addScene() {
   if (loading) return;
   loading = true;
 
-  const batch = await fatchTreeBatch(page);
+  const batch = await fetchTreeBatch(page);
   page++;
+
+  if (!batch || batch.length === 0) {
+    loading = false;
+    return;
+  }
 
   for (const tree of batch) {
     const scene = document.createElement("section");
+    scene.className = "scene";
+
+    const captionText = randomPoem().trim();
 
     scene.innerHTML = `
       <img src="${tree.img}" alt="Forest scene"/>
       <div class="caption">${captionText}</div>
       <div class="credit">
-        - ${tree.photographer}
+        — ${tree.photographer}
       </div>
     `;
 
@@ -35,7 +43,7 @@ window.addEventListener("scroll", async () => {
   const nearBottom =
     window.innerHeight + window.scrollY >=
     document.body.offsetHeight - 1200;
-  
+
   if (nearBottom) {
     await addScene();
   }
