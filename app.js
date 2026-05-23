@@ -96,3 +96,47 @@ function updateParallax() {
 }
 
 window.addEventListener("scroll", updateParallax);
+
+const audio = document.getElementById("forest-audio");
+
+async function startAudio() {
+  try {
+    await audio.play();
+
+    // remove listeners after successful start
+    window.removeEventListener("click", startAudio);
+    window.removeEventListener("touchstart", startAudio);
+  } catch (err) {
+    console.log("Audio blocked until interaction.");
+  }
+}
+
+window.addEventListener("click", startAudio);
+window.addEventListener("touchstart", startAudio);
+
+audio.volume = 0;
+
+async function startAudio() {
+  try {
+    await audio.play();
+
+    let volume = 0;
+
+    const fade = setInterval(() => {
+      volume += 0.02;
+
+      if (volume >= 0.5) {
+        volume = 0.5;
+        clearInterval(fade);
+      }
+
+      audio.volume = volume;
+    }, 100);
+
+    window.removeEventListener("click", startAudio);
+    window.removeEventListener("touchstart", startAudio);
+
+  } catch (err) {
+    console.log("Audio blocked until interaction.");
+  }
+}
