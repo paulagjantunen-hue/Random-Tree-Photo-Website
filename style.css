@@ -1,5 +1,5 @@
 body::before {
-    content: "CSS LOADED";
+    content: "";
     position: fixed;
     inset: 0;
     background:

@@ -1,3 +1,8 @@
+document.body.insertAdjacentHTML(
+  "beforeend",
+  '<div style="position:fixed;bottom:0;left:0;z-index:99999;background:blue;color:white;padding:10px;">JS LOADED</div>'
+);
+
 const feed = document.getElementById("feed");
 
 let loading = false;
