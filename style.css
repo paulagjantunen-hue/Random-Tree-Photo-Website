@@ -29,6 +29,8 @@ header p {
 }
 
 .scene {
+    position: relative;
+    z-index: 30;
     width: min(900px, 92vw);
     opacity: 1;
     margin-bottom: 120px;
