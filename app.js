@@ -140,3 +140,21 @@ async function startAudio() {
     console.log("Audio blocked until interaction.");
   }
 }
+
+const rain = document.querySelector(".rain-layer");
+
+function updateRain() {
+  const scrollY = window.scrollY;
+  const maxScroll =
+    document.body.scrollHeight - window.innerHeight;
+
+  const depth = maxScroll > 0
+    ? scrollY / maxScroll
+    : 0;
+
+  // deeper into forest = heavier rain
+  rain.style.opacity = 0.2 + depth * 0.6;
+}
+
+window.addEventListener("scroll", updateRain);
+window.addEventListener("DOMContentLoaded", updateRain);

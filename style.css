@@ -138,3 +138,44 @@ header p {
         opacity 1.5s ease,
         transform 0.2s linear;
 }
+
+.rain-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 25;
+    overflow: hidden;
+}
+
+.rain-layer::before {
+    content: "";
+    position: absolute;
+    inset: -200%;
+
+    background-image:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.10) 0px,
+            rgba(255,255,255,0.10) 2px,
+            transparent 2px,
+            transparent 14px
+        );
+    
+    background-size: 3px 18px;
+
+    opacity: 0.18;
+
+    transform: rotate(12deg);
+
+    animation: rainFall 0.8s linear infinite;
+}
+
+@keyframes rainFall {
+    from {
+        transform: translateY(0) rotate(12deg);
+    }
+
+    to {
+        transform: translateY(220px) rotate(12deg);
+    }
+}
