@@ -17,7 +17,7 @@ async function addScene() {
 
   for (const tree of batch) {
     const scene = document.createElement("section");
-    scene.className = "scene";
+    scene.className = "scene depth-layer";
 
     const captionText = randomPoem().trim();
 
@@ -30,6 +30,8 @@ async function addScene() {
     `;
 
     feed.appendChild(scene);
+
+    registerDepthScene(scene);
 
     requestAnimationFrame(() => {
       scene.classList.add("visible");
@@ -73,3 +75,24 @@ function updateFog() {
 
 window.addEventListener("scroll", updateFog);
 window.addEventListener("DOMContentLoaded", updateFog);
+
+const depthScenes = [];
+
+function registerDepthScene(scene) {
+  depthScenes.push(scene);
+}
+
+function updateParallax() {
+  const scrollY = window.scrollY;
+
+  depthScenes.forEach((scene, index) => {
+    const speed = 0.04 + (index % 5) * 0.015;
+
+    const y = scrollY * speed;
+
+    scene.style.transform =
+        `translateY(${y}px)`;
+  });
+}
+
+window.addEventListener("scroll", updateParallax);
