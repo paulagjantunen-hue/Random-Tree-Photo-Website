@@ -3,31 +3,38 @@ const feed = document.getElementById("feed");
 let loading = false;
 let page = 1;
 
-for (const tree of batch) {
-  const scene = document.createElement("section");
-  scene.className = "scene";
+async function addScene() {
+  if (loading) return;
+  loading = true;
 
-  const captionText = randomPoem().trim(); // actually execute function
+  const batch = await fatchTreeBatch(page);
+  page++;
 
-  scene.innerHTML = `
-    <img src="${tree.img}" alt="Forest scene"/>
-    <div class="caption">${captionText}</div>
-    <div class="credit">
-      - ${tree.photographer}
-    </div>
-  `;
+  for (const tree of batch) {
+    const scene = document.createElement("section");
 
-  feed.appendChild(scene);
+    scene.innerHTML = `
+      <img src="${tree.img}" alt="Forest scene"/>
+      <div class="caption">${captionText}</div>
+      <div class="credit">
+        - ${tree.photographer}
+      </div>
+    `;
 
-  requestAnimationFrame(() => {
-    scene.classList.add("visible");
-  });
+    feed.appendChild(scene);
+
+    requestAnimationFrame(() => {
+      scene.classList.add("visible");
+    });
+  }
+
+  loading = false;
 }
 
 window.addEventListener("scroll", async () => {
   const nearBottom =
-    window.innerHeight + window.scrollY
-    >= document.body.offsetHeight - 1200;
+    window.innerHeight + window.scrollY >=
+    document.body.offsetHeight - 1200;
   
   if (nearBottom) {
     await addScene();
