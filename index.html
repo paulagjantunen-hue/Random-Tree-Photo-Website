@@ -19,7 +19,15 @@
     <source src="audio/forest.mp3" type="audio/mpeg">
   </audio>
 
-  <img loading="lazy">
+  <img
+    loading="lazy"
+    decoding="async"
+    src="${tree.img}"
+    alt="Forest scene"
+  />
+
+  <div class="caption">${captionText}</div>
+  <div class="credit">${tree.photographer}</div>
 
   <header>
     <h1>Forest OS</h1>

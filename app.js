@@ -5,15 +5,12 @@ let loading = false;
 
 const depthScenes = [];
 
-const fog = document.querySelector(".fog-layer");
-const rain = document.querySelector(".rain-layer")
-const lightning = document.querySelector(".lightning");
-const audio = document.getElementById("forest-audio");
+let fog, rain, lightning, audio;
 
 const environment = {
   depth: 0,
-  wind: 0,
-  time: 0,
+  wind: 0;
+  time: 0;
 };
 
 /* LOAD SCENES */
@@ -25,20 +22,29 @@ async function addScene() {
   const batch = await fetchTreeBatch(page);
   page++;
 
+  if (!batch) {
+    loading = false;
+    return;
+  }
+
   for (const tree of batch) {
     const scene = document.createElement("section");
     
     scene.className = "scene";
     
     scene.innerHTML = `
-      <img src=loading="lazy" src="${tree.img}" alt="Forest"/>
+      <img loading="lazy" src="${tree.img}" alt="Forest"/>
       <div class="caption">${randomPoem()}</div>
       <div class="credit">— ${tree.photographer}</div>
     `;
 
     feed.appendChild(scene);
-      
     depthScenes.push(scene);
+
+    if (depthScenes.length > 40) {
+      const old = depthScenes.shift();
+      old?.remove();
+    }
     
     requestAnimationFrame(() => {
       scene.classList.add("visible");
@@ -62,28 +68,25 @@ function updateWorld() {
 
   environment.wind =
     Math.sin(environment.time * 0.3) * 10;
-  
-  /* PARALLAX */
-  depthScenes.forEach((scene, i) => {
-    const speed = 0.03 + (i % 5) * 0.01;
-
-    scene.style.transform =
-      `translateY(${scrollY * speed}px)`;
-  });
+  };
 
   /* fog */
-  fog.style.opacity =
-    0.15 + environment.depth * 0.3;
-
-  fog.style.transform =
-    `translateX(${environment.wind}px)`;
+  if (fog) {
+    fog.style.opacity =
+      0.15 + environment.depth * 0.3;
+    
+    fog.style.transform =
+      `translateX(${environment.wind}px)`;
+  }
   
   /* rain */
-  rain.style.opacity =
-    0.05 + environment.depth * 0.25;
+  if (rain) {
+    rain.style.opacity =
+      0.05 + environment.depth * 0.25;
+  }
   
   /* lightning */
-  if (Math.random() < 0.0008) {
+  if (lightning && Math.random() < 0.0008) {
     lightning.style.opacity = 0.15;
 
     setTimeout(() => {
@@ -94,21 +97,32 @@ function updateWorld() {
   requestAnimationFrame(updateWorld);
 }
 
+/* PARALLAX */
+function updateParallax() {
+  const scrollY = window.scrollY;
+
+  depthScenes.forEach((scene, i) => {
+    const speed = 0.01 + (i % 5) * 0.003;
+
+    scene.style.transform =
+      `translate3d(0, ${scrollY * speed}px, 0)`;
+  });
+}
+
 /* INFINITE SCROLL */
 window.addEventListener("scroll", () => {
   const nearBottom =
     window.innerHeight + window.scrollY >=
     document.body.offsetHeight - 1500;
 
-  if (nearBottom) {
-    addScene();
-  }
+  if (nearBottom) addScene();
 });
 
 /* AUDIO */
 function startAudio() {
+  if (!audio) return;
+
   audio.volume = 0.35;
-  
   audio.play().catch(() => {});
 }
 
@@ -120,6 +134,11 @@ window.addEventListener(
 
 /* START */
   window.addEventListener("DOMContentLoaded", async () => {
+    fog = document.querySelector(".fog-layer");
+    rain = document.querySelector(".rain-layer");
+    lightning = document.querySelector(".lightning");
+    audio = document.getElementById("forest-audio");
+    
     await addScene();
 
     updateWorld();

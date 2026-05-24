@@ -40,26 +40,34 @@ header p {
     align-items: center;
     position: relative;
     z-index: 30;
+    overflow: hidden;
 }
 
 /* scene */
 .scene {
+    position: rekative;
+
     width: min(900px, 92vw);
-    margin-bottom: 120px;
-    
+
+    margin-bottom: 140px;
+
     opacity: 0;
-    --offsetY: 40px;
-    --parallaxY: 0px;
-    
-    transform: translateY(calc(var(--offsetY) + var(--parallaxY)));
-    transition: opacity 1.5s ease, transform 0.2s linear;
+
+    transform: translateY(30px);
+
+    transition:
+      opacity 1.2s ease,
+      transform 0.2s linear;
+
+    will-change: transform;
+
+    z-index: 2;
 }
 
 .scene.visible {
     position: relative;
     z-index: 30; 
     opacity: 1;
-    --offsetY: 0px;
 }
 
 .scene img {
