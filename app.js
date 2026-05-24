@@ -42,7 +42,7 @@ async function addScene() {
       requestAnimationFrame(() => el.classList.add("visible"));
     }
   } catch (e) {
-    console.error("Scene load failed:", e);
+    console.error("Scene load failed:", e); 
   }
 
   loading = false;

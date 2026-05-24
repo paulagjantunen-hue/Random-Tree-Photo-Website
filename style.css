@@ -45,21 +45,21 @@ header p {
 
 /* scene */
 .scene {
-  transform: translateY(calc(var(--y, 0px) + 30px));
-  transition: transform 0.2s linear, opacity 1.2s ease;
-}
+  width: min(900px, 92vw);
+  margin: 0 auto 140px;
+  position: relative;
 
-.scene.visible {
-    position: relative;
-    z-index: 30; 
-    opacity: 1;
+  display: block;
+
+  /* IMPORTANT: reserve real space */
+  transform: translateY(var(--parallax, 0px));
+
+  transition: opacity 1.2s ease;
 }
 
 .scene img {
-    width: 100%;
-    border-radius: 18px;
-    box-shadow: 0 10px 60px rgba(0,0,0,0.6);
-    animation: imageBreath 12s ease-in-out infinite;
+  width: 100%;
+  display: block;
 }
 
 @keyframes imageBreath {
