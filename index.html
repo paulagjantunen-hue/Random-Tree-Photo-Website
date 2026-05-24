@@ -1,45 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forest OS</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forest OS</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  
+
+  <!-- FX LAYERS -->
   <div class="fog-layer"></div>
   <div class="fog-layer fog-layer-2"></div>
-
   <div class="rain-layer"></div>
   <div class="lightning"></div>
 
+  <!-- AUDIO -->
   <audio id="forest-audio" loop>
-    <source src="forest.mp3" type="audio/mpeg">
+    <source src="audio/forest.mp3" type="audio/mpeg">
   </audio>
 
-  <img
-    loading="lazy"
-    decoding="async"
-    src="${tree.img}"
-    alt="Forest scene"
-  />
-
-  <div class="caption">${captionText}</div>
-  <div class="credit">${tree.photographer}</div>
-
+  <!-- HEADER -->
   <header>
     <h1>Forest OS</h1>
     <p>an endless walk through digital woods</p>
   </header>
 
+  <!-- SCENES GO HERE -->
   <main id="feed"></main>
 
   <div class="loading">walking deeper into the forest...</div>
 
+  <!-- SCRIPTS -->
   <script src="poetry.js"></script>
   <script src="api.js"></script>
   <script src="app.js"></script>
+
 </body>
 </html>
