@@ -19,7 +19,7 @@ async function fetchTreeBatch(page = 1) {
     const data = await res.json();
 
     return data.results.map(img => ({
-        img: img.urls.regular,
+        img: img.urls.small,
         photographer: img.user?.name || "Unknown"
     }));
 }
