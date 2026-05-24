@@ -9,8 +9,8 @@ let fog, rain, lightning, audio;
 
 const environment = {
   depth: 0,
-  wind: 0;
-  time: 0;
+  wind: 0,
+  time: 0,
 };
 
 /* LOAD SCENES */
@@ -68,7 +68,6 @@ function updateWorld() {
 
   environment.wind =
     Math.sin(environment.time * 0.3) * 10;
-  };
 
   /* fog */
   if (fog) {
@@ -95,6 +94,7 @@ function updateWorld() {
   }
 
   requestAnimationFrame(updateWorld);
+  updateParallax();
 }
 
 /* PARALLAX */
