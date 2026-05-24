@@ -45,23 +45,8 @@ header p {
 
 /* scene */
 .scene {
-    position: rekative;
-
-    width: min(900px, 92vw);
-
-    margin-bottom: 140px;
-
-    opacity: 0;
-
-    transform: translateY(30px);
-
-    transition:
-      opacity 1.2s ease,
-      transform 0.2s linear;
-
-    will-change: transform;
-
-    z-index: 2;
+  transform: translateY(calc(var(--y, 0px) + 30px));
+  transition: transform 0.2s linear, opacity 1.2s ease;
 }
 
 .scene.visible {
@@ -117,70 +102,42 @@ header p {
 .fog-layer {
   position: fixed;
   inset: 0;
-
-  z-index: 10;
-
+  z-index: 5;
   pointer-events: none;
 
   background:
-    radial-gradient(
-      circle at center,
-      rgba(255,255,255,0.06),
-      transparent 70%
-    );
-  
-  opacity: 0.2;
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), transparent 60%),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,0.18), transparent 65%),
+    radial-gradient(circle at 40% 80%, rgba(255,255,255,0.12), transparent 70%);
 
-  transition: opacity 1s linear;
-
-  will-change: transform;
+  filter: blur(90px);
+  opacity: 0.5;
 }
 
 .rain-layer {
   position: fixed;
   inset: 0;
-
+  z-index: 6;
   pointer-events: none;
-  
-  z-index: 20;
 
-  opacity: 0.15;
-}
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.08) 1px,
+    transparent 3px,
+    transparent 10px
+  );
 
-.rain-layer::before {
-  content: "";
-
-  position: absolute;
-  inset: 0;
-
-  background-image:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.10) 0px,
-      rgba(255,255,255,0.10) 2px,
-      transparent 2px,
-      transparent 18px
-    );
-
-  background-size: 2px 18px;
-
-  animation: rainFall 0.7s linear infinite;
-}
-
-@keyframes rainFall {
-  from {
-    transform: translateY(-20px);
-  }
-
-  to {
-    transform: translateY(20px);
-  }
+  opacity: 0.25;
+  transform: rotate(var(--rainAngle, 0deg));
 }
 
 .lightning {
   position: fixed;
   inset: 0;
+  z-index: 999;
+  pointer-events: none;
   background: white;
   opacity: 0;
-  pointer-events: none;
+  transition: opacity 0.05s linear;
 }
